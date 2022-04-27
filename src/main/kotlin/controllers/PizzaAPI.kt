@@ -22,8 +22,44 @@ class PizzaAPI(serializerType: Serializer) {
             listOfPizzas
         }
     }
+    fun numberOfPizzas(): Int {
+        return pizzas.size
+    }
+    //utility method to determine if an index is valid in a list.
+    fun isValidListIndex(index: Int, list: List<Any>): Boolean {
+        return (index >= 0 && index < list.size)
+    }
+//delete method
+
+    fun deletePizza(indexToDelete: Int): Pizza? {
+        return if (isValidListIndex(indexToDelete, pizzas)) {
+            pizzas.removeAt(indexToDelete)
+        } else null
+    }
+    fun isValidIndex(index: Int) :Boolean{
+        return isValidListIndex(index, pizzas);
+    }
+
+    fun findPizza(index: Int): Pizza? {
+        return if (isValidListIndex(index, pizzas)) {
+            pizzas[index]
+        } else null
+    }
+
+    fun updatePizza(indexToUpdate: Int, pizza: Pizza?): Boolean {
+
+        val foundPizza = findPizza(indexToUpdate)
 
 
+        if ((foundPizza!= null) && (pizza != null)) {
+            foundPizza.PizzaTitle = pizza.PizzaTitle
+            foundPizza.PizzaPrice = pizza.PizzaPrice
+            foundPizza.PizzaSize = pizza.PizzaSize
+            return true
+        }
 
+
+        return false
+    }
 
 }

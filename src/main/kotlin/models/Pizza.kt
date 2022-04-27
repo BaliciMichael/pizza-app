@@ -1,13 +1,13 @@
 package models
 
-data class Pizza(var PizzaTitle: String,
-                 var PizzaPrice: Int,
-                 var PizzaType: String,
-                 var ToppingsAvailable: Boolean,
-                 var PizzaSize: Int,
+data class Pizza(
+    var PizzaTitle: String,
+    var PizzaPrice: Double,
+    var ToppingsAvailable: Boolean,
+    var PizzaSize: Int,
 
 
 
-                 ) {
+    ) {
 
 }
