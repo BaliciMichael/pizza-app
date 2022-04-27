@@ -1,4 +1,7 @@
-import utils.ScannerInput
+import controllers.PizzaAPI
+import models.Pizza
+import persistence.JSONSerializer
+import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
 import java.io.File
@@ -10,7 +13,7 @@ fun main(args: Array<String>) {
     runMenu()
 }
 val scanner = Scanner(System.`in`)
-
+private val pizzaApi = PizzaAPI(JSONSerializer(File("notes.yml")))
 fun mainMenu() : Int {
     print("""
           ----------------------------------
@@ -41,19 +44,56 @@ fun runMenu() {
     } while (true)
 }
 fun addPizza(){
-    println("You chose Add Pizza")
+    val pizzaTitle = readNextLine("Enter a title for the note: ")
+    val pizzaPrice = readNextDouble("Enter a priority (1-low, 2, 3, 4, 5-high): ")
+    val pizzaSize = readNextInt("Enter a category for the note: ")
+    val isAdded = pizzaApi.add(Pizza(pizzaTitle,pizzaPrice,true, pizzaSize))
+
+    if (isAdded) {
+        println("Added Successfully")
+    } else {
+        println("Add Failed")
+    }
 }
 
 fun listPizza(){
-    println("You chose List Pizza")
+    println(pizzaApi.listPizzas())
 }
 
 fun updatePizza(){
-    println("You chose Update this Pizza")
+    listPizza()
+    if (pizzaApi.numberOfPizzas() > 0) {
+
+        val indexToUpdate = readNextInt("Enter the index of the Pizza to update: ")
+        if (pizzaApi.isValidIndex(indexToUpdate)) {
+            val pizzaTitle = readNextLine("Enter a pizza name: ")
+            val pizzaPrice = readNextDouble("Enter Price: ")
+            val pizzaSize = readNextInt("Enter pizza size: ")
+
+
+
+            if (pizzaApi.updatePizza(indexToUpdate, Pizza(pizzaTitle,pizzaPrice,true, pizzaSize))){
+                println("Update Successful")
+            } else {
+                println("Update Failed")
+            }
+        } else {
+            println("There are no notes for this index number")
+        }
+    }
 }
 
 fun deletePizza(){
-    println("You chose to Delete this Pizza")
+    listPizza()
+    if (pizzaApi.numberOfPizzas() > 0) {
+        val indexToDelete = readNextInt("Enter the index of the Pizza you would like to delete: ")
+        val noteToDelete = pizzaApi.deletePizza(indexToDelete)
+        if (noteToDelete != null) {
+            println("Delete Successful! Deleted Pizza: ${noteToDelete.PizzaTitle}")
+        } else {
+            println("Delete NOT Successful")
+        }
+    }
 }
 
 
