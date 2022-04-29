@@ -46,15 +46,23 @@ class PizzaAPITest {
         emptyNotes = null
     }
 
+
+
     @Test
     fun `adding a Note to a populated list adds to ArrayList`(){
         val newNote = Pizza("Half and Half", 12.74, false, 12)
+        assertEquals(5, populatedNotes!!.numberOfPizzas())
         assertTrue(populatedNotes!!.add(newNote))
+        assertEquals(6, populatedNotes!!.numberOfPizzas())
+        assertEquals(newNote, populatedNotes!!.findPizza(populatedNotes!!.numberOfPizzas() - 1))
     }
 
     @Test
     fun `adding a Note to an empty list adds to ArrayList`(){
         val newNote = Pizza("Half and Half", 12.74, false, 12)
+        assertEquals(0, emptyNotes!!.numberOfPizzas())
         assertTrue(emptyNotes!!.add(newNote))
+        assertEquals(1, emptyNotes!!.numberOfPizzas())
+        assertEquals(newNote, emptyNotes!!.findPizza(emptyNotes!!.numberOfPizzas() - 1))
     }
 }
