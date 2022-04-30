@@ -6,8 +6,4 @@ data class Pizza(
     var ToppingsAvailable: Boolean,
     var PizzaSize: Int,
 
-
-
-    ) {
-
-}
+)

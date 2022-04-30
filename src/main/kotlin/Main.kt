@@ -4,10 +4,10 @@ import persistence.JSONSerializer
 import utils.ScannerInput.readNextDouble
 import utils.ScannerInput.readNextInt
 import utils.ScannerInput.readNextLine
+import utils.Utilities
 import java.io.File
 import java.lang.System.exit
-import java.util.*
-import utils.Utilities
+import java.util.Scanner
 
 fun main(args: Array<String>) {
 
@@ -15,8 +15,9 @@ fun main(args: Array<String>) {
 }
 val scanner = Scanner(System.`in`)
 private val pizzaApi = PizzaAPI(JSONSerializer(File("notes.yml")))
-fun mainMenu() : Int {
-    print("""
+fun mainMenu(): Int {
+    print(
+        """
           ----------------------------------
           |    Welcome to the Pizza App    |
           ----------------------------------
@@ -32,35 +33,36 @@ fun mainMenu() : Int {
           ----------------------------------
           |   0) Exit                      |
           ----------------------------------
-          ==>> """)
+          ==>> """
+    )
     return scanner.nextInt()
 }
 fun runMenu() {
     do {
         val option = mainMenu()
         when (option) {
-            1  -> addPizza()
-            2  -> listPizza()
-            3  -> updatePizza()
-            4  -> deletePizza()
+            1 -> addPizza()
+            2 -> listPizza()
+            3 -> updatePizza()
+            4 -> deletePizza()
             5 -> specifyAvailability()
             6 -> searchPizzaByTitle()
             9 -> save()
             10 -> load()
-            0  -> exitApp()
-            else -> System.out.println("Invalid option entered: ${option}")
+            0 -> exitApp()
+            else -> System.out.println("Invalid option entered: $option")
         }
     } while (true)
 }
-fun addPizza(){
+fun addPizza() {
     val pizzaTitle = readNextLine("Enter a pizza name: ")
     val pizzaPrice = readNextDouble("Enter Price: ")
     var pizzaSize = readNextInt("Enter pizza size(In inches) 10',12',14',16',18' : ")
-    while (Utilities.validSize(pizzaSize)){
+    while (Utilities.validSize(pizzaSize)) {
         println("Invalid number ")
         pizzaSize = readNextInt("Enter pizza size(In inches) 10',12',14',16',18' : ")
     }
-    val isAdded = pizzaApi.add(Pizza(pizzaTitle,pizzaPrice,true, pizzaSize))
+    val isAdded = pizzaApi.add(Pizza(pizzaTitle, pizzaPrice, true, pizzaSize))
 
     if (isAdded) {
         println("Added Successfully")
@@ -69,8 +71,8 @@ fun addPizza(){
     }
 }
 
-fun listPizza(){
-    //println(pizzaApi.listPizzas())
+fun listPizza() {
+    // println(pizzaApi.listPizzas())
     if (pizzaApi.numberOfPizzas() > 0) {
         val option = readNextInt(
             """
@@ -79,24 +81,24 @@ fun listPizza(){
                   > |   2) View Pizzas with AVAILABLE toppings       |
                   > |   3) View Pizzas without AVAILABLE toppings    |
                   > --------------------------------------------------
-         > ==>> """.trimMargin(">"))
+         > ==>> """.trimMargin(">")
+        )
 
         when (option) {
-            1 -> listAllPizzas();
-            2 -> listAvailablePizzas();
-            3 -> listNonAvailablePizzas();
-            else -> println("Invalid number entered: " + option);
+            1 -> listAllPizzas()
+            2 -> listAvailablePizzas()
+            3 -> listNonAvailablePizzas()
+            else -> println("Invalid number entered: " + option)
         }
     } else {
-        println("Option Invalid - No Pizzas stored");
+        println("Option Invalid - No Pizzas stored")
     }
 }
-fun listAllPizzas(){
+fun listAllPizzas() {
     print(pizzaApi.listPizzas())
 }
 
-
-fun updatePizza(){
+fun updatePizza() {
     listPizza()
     if (pizzaApi.numberOfPizzas() > 0) {
 
@@ -106,9 +108,7 @@ fun updatePizza(){
             val pizzaPrice = readNextDouble("Enter Price: ")
             val pizzaSize = readNextInt("Enter pizza size: ")
 
-
-
-            if (pizzaApi.updatePizza(indexToUpdate, Pizza(pizzaTitle,pizzaPrice,true, pizzaSize))){
+            if (pizzaApi.updatePizza(indexToUpdate, Pizza(pizzaTitle, pizzaPrice, true, pizzaSize))) {
                 println("Update Successful")
             } else {
                 println("Update Failed")
@@ -119,7 +119,7 @@ fun updatePizza(){
     }
 }
 
-fun deletePizza(){
+fun deletePizza() {
     listPizza()
     if (pizzaApi.numberOfPizzas() > 0) {
         val indexToDelete = readNextInt("Enter the index of the Pizza you would like to delete: ")
@@ -134,7 +134,7 @@ fun deletePizza(){
 fun listAvailablePizzas() {
     println(pizzaApi.listAvailablePizzas())
 }
-fun listNonAvailablePizzas(){
+fun listNonAvailablePizzas() {
     print(pizzaApi.listNonAvailablePizzas())
 }
 
@@ -151,18 +151,16 @@ fun specifyAvailability() {
         }
     }
 }
-//extra methods
-fun searchPizzaByTitle(){
+// extra methods
+fun searchPizzaByTitle() {
     val sTitle = readNextLine("Enter the Pizza name: ")
     val sResult = pizzaApi.searchPizzaByTitle(sTitle)
-    if(sResult.isEmpty()){
+    if (sResult.isEmpty()) {
         println("No Pizza like that exists")
-    }
-    else{
+    } else {
         println(sResult)
     }
 }
-
 
 fun save() {
     try {
@@ -180,8 +178,7 @@ fun load() {
     }
 }
 
-
-fun exitApp(){
+fun exitApp() {
     println("Exiting...bye")
     exit(0)
 }

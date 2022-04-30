@@ -1,12 +1,10 @@
 package controllers
-import persistence.Serializer;
-import models.Pizza;
+import models.Pizza
+import persistence.Serializer
 
 class PizzaAPI(serializerType: Serializer) {
     private var serializer: Serializer = serializerType
     private var pizzas = ArrayList<Pizza>()
-
-
 
     fun add(pizza: Pizza): Boolean {
         return pizzas.add(pizza)
@@ -17,7 +15,7 @@ class PizzaAPI(serializerType: Serializer) {
         } else {
             var listOfPizzas = ""
             for (i in pizzas.indices) {
-                listOfPizzas += "${i}: ${pizzas[i]} \n"
+                listOfPizzas += "$i: ${pizzas[i]} \n"
             }
             listOfPizzas
         }
@@ -25,19 +23,19 @@ class PizzaAPI(serializerType: Serializer) {
     fun numberOfPizzas(): Int {
         return pizzas.size
     }
-    //utility method to determine if an index is valid in a list.
+    // utility method to determine if an index is valid in a list.
     fun isValidListIndex(index: Int, list: List<Any>): Boolean {
         return (index >= 0 && index < list.size)
     }
-//delete method
+// delete method
 
     fun deletePizza(indexToDelete: Int): Pizza? {
         return if (isValidListIndex(indexToDelete, pizzas)) {
             pizzas.removeAt(indexToDelete)
         } else null
     }
-    fun isValidIndex(index: Int) :Boolean{
-        return isValidListIndex(index, pizzas);
+    fun isValidIndex(index: Int): Boolean {
+        return isValidListIndex(index, pizzas)
     }
 
     fun findPizza(index: Int): Pizza? {
@@ -50,35 +48,32 @@ class PizzaAPI(serializerType: Serializer) {
 
         val foundPizza = findPizza(indexToUpdate)
 
-
-        if ((foundPizza!= null) && (pizza != null)) {
+        if ((foundPizza != null) && (pizza != null)) {
             foundPizza.PizzaTitle = pizza.PizzaTitle
             foundPizza.PizzaPrice = pizza.PizzaPrice
             foundPizza.PizzaSize = pizza.PizzaSize
             return true
         }
 
-
         return false
     }
-    fun formatListString(notesToFormat : List<Pizza>) : String =
+    fun formatListString(notesToFormat: List<Pizza>): String =
         notesToFormat
-            .joinToString (separator = "\n") { pizza ->
-                pizzas.indexOf(pizza).toString() + ": " + pizza.toString() }
+            .joinToString(separator = "\n") { pizza ->
+                pizzas.indexOf(pizza).toString() + ": " + pizza.toString()
+            }
 
     fun listAvailablePizzas(): String =
-        if  (pizzasWithAvailableToppings() == 0)  "No available pizzas stored"
-        else formatListString(pizzas.filter { pizza -> pizza.ToppingsAvailable})
-
+        if (pizzasWithAvailableToppings() == 0) "No available pizzas stored"
+        else formatListString(pizzas.filter { pizza -> pizza.ToppingsAvailable })
 
     fun listNonAvailablePizzas(): String =
 
-        if  (pizzasWithoutAvailableToppings() == 0) "No non available pizzas stored"
-        else formatListString(pizzas.filter { pizza -> !pizza.ToppingsAvailable})
+        if (pizzasWithoutAvailableToppings() == 0) "No non available pizzas stored"
+        else formatListString(pizzas.filter { pizza -> !pizza.ToppingsAvailable })
 
-
-    fun pizzasWithAvailableToppings(): Int = pizzas.count { note: Pizza -> note.ToppingsAvailable}
-    fun pizzasWithoutAvailableToppings(): Int = pizzas.count { note: Pizza -> !note.ToppingsAvailable}
+    fun pizzasWithAvailableToppings(): Int = pizzas.count { note: Pizza -> note.ToppingsAvailable }
+    fun pizzasWithoutAvailableToppings(): Int = pizzas.count { note: Pizza -> !note.ToppingsAvailable }
 
     @Throws(Exception::class)
     fun load() {
@@ -101,10 +96,8 @@ class PizzaAPI(serializerType: Serializer) {
         return false
     }
 
-    fun searchPizzaByTitle (searchString : String) =
+    fun searchPizzaByTitle(searchString: String) =
         formatListString(
-            pizzas.filter { pizza -> pizza.PizzaTitle.contains(searchString, ignoreCase = true) })
-
-
-
+            pizzas.filter { pizza -> pizza.PizzaTitle.contains(searchString, ignoreCase = true) }
+        )
 }
