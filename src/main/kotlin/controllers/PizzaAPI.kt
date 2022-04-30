@@ -61,5 +61,28 @@ class PizzaAPI(serializerType: Serializer) {
 
         return false
     }
+    fun pizzasWithAvailableToppings(): Int = pizzas.count { note: Pizza -> note.ToppingsAvailable}
+    fun pizzasWithoutAvailableToppings(): Int = pizzas.count { note: Pizza -> !note.ToppingsAvailable}
+
+    @Throws(Exception::class)
+    fun load() {
+        pizzas = serializer.read() as ArrayList<Pizza>
+    }
+
+    @Throws(Exception::class)
+    fun store() {
+        serializer.write(pizzas)
+    }
+
+    fun availability(index: Int): Boolean {
+        if (isValidIndex(index)) {
+            val pizzaAvailability = pizzas[index]
+            if (pizzaAvailability.ToppingsAvailable) {
+                pizzaAvailability.ToppingsAvailable = false
+                return true
+            }
+        }
+        return false
+    }
 
 }
