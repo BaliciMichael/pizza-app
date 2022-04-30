@@ -68,6 +68,12 @@ class PizzaAPI(serializerType: Serializer) {
 
     fun listAvailablePizzas(): String =
         if  (pizzasWithAvailableToppings() == 0)  "No available pizzas stored"
+        else formatListString(pizzas.filter { pizza -> pizza.ToppingsAvailable})
+
+
+    fun listNonAvailablePizzas(): String =
+
+        if  (pizzasWithoutAvailableToppings() == 0) "No non available pizzas stored"
         else formatListString(pizzas.filter { pizza -> !pizza.ToppingsAvailable})
 
 

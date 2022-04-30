@@ -63,8 +63,31 @@ fun addPizza(){
 }
 
 fun listPizza(){
-    println(pizzaApi.listPizzas())
+    //println(pizzaApi.listPizzas())
+    if (pizzaApi.numberOfPizzas() > 0) {
+        val option = readNextInt(
+            """
+                  > --------------------------------------------------
+                  > |   1) View ALL Pizzas                           |
+                  > |   2) View Pizzas with AVAILABLE toppings       |
+                  > |   3) View Pizzas without AVAILABLE toppings    |
+                  > --------------------------------------------------
+         > ==>> """.trimMargin(">"))
+
+        when (option) {
+            1 -> listAllPizzas();
+            2 -> listAvailablePizzas();
+            3 -> listNonAvailablePizzas();
+            else -> println("Invalid number entered: " + option);
+        }
+    } else {
+        println("Option Invalid - No Pizzas stored");
+    }
 }
+fun listAllPizzas(){
+    print(pizzaApi.listPizzas())
+}
+
 
 fun updatePizza(){
     listPizza()
@@ -103,6 +126,9 @@ fun deletePizza(){
 }
 fun listAvailablePizzas() {
     println(pizzaApi.listAvailablePizzas())
+}
+fun listNonAvailablePizzas(){
+    print(pizzaApi.listNonAvailablePizzas())
 }
 
 fun specifyAvailability() {
