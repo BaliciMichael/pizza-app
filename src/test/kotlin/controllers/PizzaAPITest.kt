@@ -139,4 +139,40 @@ class PizzaAPITest {
         assertEquals(storingPizzas.findPizza(0), loadedPizzas.findPizza(0))
 
     }
+
+
+    @Nested
+    inner class SearchMethods {
+
+        @Test
+        fun `search pizzas by title returns no pizzas when no pizzas with that title exist`() {
+            Assertions.assertEquals(5, populatedNotes!!.numberOfPizzas())
+            val sResults =  populatedNotes!!.searchPizzaByTitle("no results expected")
+            assertTrue(sResults.isEmpty())
+
+            Assertions.assertEquals(0, emptyNotes!!.numberOfPizzas())
+            assertTrue(emptyNotes!!.searchPizzaByTitle("").isEmpty())
+        }
+        @Test
+        fun `search notes by title returns notes when notes with that title exist`() {
+            Assertions.assertEquals(5, populatedNotes!!.numberOfPizzas())
+
+            //Searching a populated collection for a full title that exists (case matches exactly)
+            var searchResults = populatedNotes!!.searchPizzaByTitle("Capricossa")
+            assertTrue(searchResults.contains("Capricossa"))
+            assertFalse(searchResults.contains("Pepperoni"))
+
+            //Searching a populated collection for a partial title that exists (case matches exactly)
+            searchResults = populatedNotes!!.searchPizzaByTitle("Hawaian")
+            assertTrue(searchResults.contains("Hawaian"))
+            assertFalse(searchResults.contains("Half half"))
+
+            //Searching a populated collection for a partial title that exists (case doesn't match)
+            searchResults = populatedNotes!!.searchPizzaByTitle("CaprICossA")
+            assertTrue(searchResults.contains("Capricossa"))
+            assertFalse(searchResults.contains("Full Irish"))
+        }
+
+
+    }
 }

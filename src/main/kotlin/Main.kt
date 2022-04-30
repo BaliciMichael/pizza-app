@@ -25,6 +25,7 @@ fun mainMenu() : Int {
           |   3) Update a Pizza            |
           |   4) Delete a Pizza            |
           |   5) Availability              |
+          |   6) Search Pizza By Name      |
           |   9) Save                      |
           |   10) Load                     |
           ----------------------------------
@@ -42,6 +43,7 @@ fun runMenu() {
             3  -> updatePizza()
             4  -> deletePizza()
             5 -> specifyAvailability()
+            6 -> searchPizzaByTitle()
             9 -> save()
             10 -> load()
             0  -> exitApp()
@@ -144,6 +146,19 @@ fun specifyAvailability() {
         }
     }
 }
+//extra methods
+fun searchPizzaByTitle(){
+    val sTitle = readNextLine("Enter the Pizza name: ")
+    val sResult = pizzaApi.searchPizzaByTitle(sTitle)
+    if(sResult.isEmpty()){
+        println("No Pizza like that exists")
+    }
+    else{
+        println(sResult)
+    }
+}
+
+
 fun save() {
     try {
         pizzaApi.store()

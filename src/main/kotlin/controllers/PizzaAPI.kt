@@ -101,4 +101,10 @@ class PizzaAPI(serializerType: Serializer) {
         return false
     }
 
+    fun searchPizzaByTitle (searchString : String) =
+        formatListString(
+            pizzas.filter { pizza -> pizza.PizzaTitle.contains(searchString, ignoreCase = true) })
+
+
+
 }
