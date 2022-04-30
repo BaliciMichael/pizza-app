@@ -6,5 +6,9 @@ In this app you are able to:
 - Read
 - Update
 - Delete pizzas.
+- Search Pizzas by name
+- Save and Load
+- Search Pizzas according to availability 
+
 
 ## JUnit Test Driven Development utilised
