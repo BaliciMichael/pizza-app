@@ -7,6 +7,7 @@ import utils.ScannerInput.readNextLine
 import java.io.File
 import java.lang.System.exit
 import java.util.*
+import utils.Utilities
 
 fun main(args: Array<String>) {
 
@@ -54,7 +55,11 @@ fun runMenu() {
 fun addPizza(){
     val pizzaTitle = readNextLine("Enter a pizza name: ")
     val pizzaPrice = readNextDouble("Enter Price: ")
-    val pizzaSize = readNextInt("Enter pizza size: ")
+    var pizzaSize = readNextInt("Enter pizza size(In inches) 10',12',14',16',18' : ")
+    while (Utilities.validSize(pizzaSize)){
+        println("Invalid number ")
+        pizzaSize = readNextInt("Enter pizza size(In inches) 10',12',14',16',18' : ")
+    }
     val isAdded = pizzaApi.add(Pizza(pizzaTitle,pizzaPrice,true, pizzaSize))
 
     if (isAdded) {
