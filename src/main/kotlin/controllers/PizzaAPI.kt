@@ -61,6 +61,16 @@ class PizzaAPI(serializerType: Serializer) {
 
         return false
     }
+    fun formatListString(notesToFormat : List<Pizza>) : String =
+        notesToFormat
+            .joinToString (separator = "\n") { pizza ->
+                pizzas.indexOf(pizza).toString() + ": " + pizza.toString() }
+
+    fun listAvailablePizzas(): String =
+        if  (pizzasWithAvailableToppings() == 0)  "No available pizzas stored"
+        else formatListString(pizzas.filter { pizza -> !pizza.ToppingsAvailable})
+
+
     fun pizzasWithAvailableToppings(): Int = pizzas.count { note: Pizza -> note.ToppingsAvailable}
     fun pizzasWithoutAvailableToppings(): Int = pizzas.count { note: Pizza -> !note.ToppingsAvailable}
 

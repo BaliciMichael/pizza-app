@@ -24,6 +24,9 @@ fun mainMenu() : Int {
           |   2) List all Pizzas           |
           |   3) Update a Pizza            |
           |   4) Delete a Pizza            |
+          |   5) Availability              |
+          |   9) Save                      |
+          |   10) Load                     |
           ----------------------------------
           |   0) Exit                      |
           ----------------------------------
@@ -38,15 +41,18 @@ fun runMenu() {
             2  -> listPizza()
             3  -> updatePizza()
             4  -> deletePizza()
+            5 -> specifyAvailability()
+            9 -> save()
+            10 -> load()
             0  -> exitApp()
             else -> System.out.println("Invalid option entered: ${option}")
         }
     } while (true)
 }
 fun addPizza(){
-    val pizzaTitle = readNextLine("Enter a title for the note: ")
-    val pizzaPrice = readNextDouble("Enter a priority (1-low, 2, 3, 4, 5-high): ")
-    val pizzaSize = readNextInt("Enter a category for the note: ")
+    val pizzaTitle = readNextLine("Enter a pizza name: ")
+    val pizzaPrice = readNextDouble("Enter Price: ")
+    val pizzaSize = readNextInt("Enter pizza size: ")
     val isAdded = pizzaApi.add(Pizza(pizzaTitle,pizzaPrice,true, pizzaSize))
 
     if (isAdded) {
@@ -78,7 +84,7 @@ fun updatePizza(){
                 println("Update Failed")
             }
         } else {
-            println("There are no notes for this index number")
+            println("There are no pizzas for this index number")
         }
     }
 }
@@ -93,6 +99,38 @@ fun deletePizza(){
         } else {
             println("Delete NOT Successful")
         }
+    }
+}
+fun listAvailablePizzas() {
+    println(pizzaApi.listAvailablePizzas())
+}
+
+fun specifyAvailability() {
+    listAvailablePizzas()
+    if (pizzaApi.pizzasWithAvailableToppings() > 0) {
+
+        val indexToArchive = readNextInt("Enter the index of the pizza to show toppings are not available: ")
+
+        if (pizzaApi.availability(indexToArchive)) {
+            println("Action Successful!")
+        } else {
+            println("Action NOT Successful")
+        }
+    }
+}
+fun save() {
+    try {
+        pizzaApi.store()
+    } catch (e: Exception) {
+        System.err.println("Error writing to file: $e")
+    }
+}
+
+fun load() {
+    try {
+        pizzaApi.load()
+    } catch (e: Exception) {
+        System.err.println("Error reading from file: $e")
     }
 }
 

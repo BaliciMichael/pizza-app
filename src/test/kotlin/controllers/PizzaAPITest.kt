@@ -2,8 +2,10 @@ package controllers
 
 import models.Pizza
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import persistence.JSONSerializer
 import java.io.File
@@ -81,5 +83,27 @@ class PizzaAPITest {
         assertTrue(notesString.contains("Hawaian"))
         assertTrue(notesString.contains("Margaritha"))
         assertTrue(notesString.contains("Pepperoni"))
+    }
+    @Nested
+    inner class ArchiveNotes {
+        @Test
+        fun `testing that changing topping availability for a pizza that does not exist returns false`(){
+            assertFalse(populatedNotes!!.availability(6))
+            assertFalse(populatedNotes!!.availability(-1))
+            assertFalse(emptyNotes!!.availability(0))
+        }
+
+        @Test
+        fun `changing an already changed pizza returns false`(){
+            assertTrue(populatedNotes!!.findPizza(2)!!.ToppingsAvailable)
+            assertFalse(populatedNotes!!.availability(2))
+        }
+
+        @Test
+        fun `changing an available pizza changes and returns true`() {
+            assertTrue(populatedNotes!!.findPizza(1)!!.ToppingsAvailable)
+            assertTrue(populatedNotes!!.availability(1))
+            assertFalse(populatedNotes!!.findPizza(1)!!.ToppingsAvailable)
+        }
     }
 }
